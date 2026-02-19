@@ -1,17 +1,22 @@
 import * as Tone from "tone";
 import { compressor } from "./chain";
+import { setBassDetune, setBassWaveform } from "./bass";
 
 export { limiter, compressor, reverb, toggleReverb, delay, toggleDelay, setDelayFeedback, setDelayTime as applyDelayTime } from "./chain";
 export { generateBloomNotes, getRandomPentatonicNote, C_PENTATONIC } from "./notes";
+export { enableBass, notifyDotFired } from "./bass";
 
 export const synth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: "triangle" } }).connect(compressor);
 
 export const setPitch = (semitones: number) => {
   synth.set({ detune: semitones * 100 });
+  setBassDetune(semitones);
 };
 
 export const setWaveform = (type: "triangle" | "sine" | "square") => {
   synth.set({ oscillator: { type } });
+  setBassWaveform(type);
+  synth.volume.value = type === "square" ? -6 : 0;
 };
 
 export const startAudio = async () => {

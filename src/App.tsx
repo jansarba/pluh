@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BloomVisual } from "./components/BloomVisual";
 import { Knob } from "./components/Knob";
 import { useBlooms } from "./hooks/useBlooms";
-import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, applyDelayTime, setPitch, setWaveform } from "./audio";
+import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, applyDelayTime, setPitch, setWaveform, enableBass } from "./audio";
 import "./App.css";
 
 type Waveform = "triangle" | "sine" | "square";
@@ -12,13 +12,13 @@ function App() {
   const [audioStarted, setAudioStarted] = useState(false);
   const [reverbOn, setReverbOn] = useState(false);
   const [delayOn, setDelayOn] = useState(false);
+  const [bassOn, setBassOn] = useState(false);
   const [feedback, setFeedback] = useState(0.4);
   const [delayTime, setDelayTime] = useState(300);
   const [pitch, setPitchState] = useState(0);
   const [waveform, setWaveformState] = useState<Waveform>("triangle");
 
   const handleScreenClick = async (e: React.MouseEvent<HTMLDivElement>) => {
-
     if (!audioStarted) {
       await startAudio();
       setAudioStarted(true);
@@ -49,6 +49,13 @@ function App() {
     const next = !delayOn;
     setDelayOn(next);
     toggleDelay(next);
+  };
+
+  const handleBassToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = !bassOn;
+    setBassOn(next);
+    enableBass(next);
   };
 
   const handleFeedbackChange = (val: number) => {
@@ -105,6 +112,13 @@ function App() {
             onTouchStart={stopProp}
           />
         </div>
+
+        <button
+          className={`ctrl-btn ${bassOn ? 'ctrl-btn--on' : ''}`}
+          onClick={handleBassToggle}
+        >
+          bass
+        </button>
 
         <div className="ctrl-group">
           <button

@@ -48,7 +48,7 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
     });
 
     // start repeating
-    const initialDuration = data.dots.length * 100 + 500; //500ms buffer
+    const initialDuration = data.dots.length * 100 + 500; // 500ms buffer
     const setupRhythmTimer = setTimeout(() => {
       const generatedRhythm = generateRhythm();
       setRhythm(generatedRhythm);
@@ -75,7 +75,7 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
         // pick dots
         const dotIndicesToPlay = [Math.floor(Math.random() * dots.length)];
         
-        //Sometimes play multiple dots together
+        // Sometimes play multiple dots together
         if (Math.random() < 0.3 && dots.length > 1) {
           const secondDot = Math.floor(Math.random() * dots.length);
           if (secondDot !== dotIndicesToPlay[0]) {
@@ -120,7 +120,7 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
         height: data.visualSize,
       }}
     >
-      {/* This new div is the only part that can be clicked */}
+      {/* This div is the only part that can be clicked */}
       <div 
         data-bloom-id={data.id}
         className={styles.clickTarget}
