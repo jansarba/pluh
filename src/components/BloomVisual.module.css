@@ -33,6 +33,7 @@
   transform: scale(0);
   opacity: 0;
   animation: inkSpread 2.5s cubic-bezier(0.05, 0.7, 0.1, 1) forwards;
+  will-change: transform;
 }
 
 .dotContainer {

@@ -1,12 +1,12 @@
 import * as Tone from "tone";
 
-export const limiter = new Tone.Limiter(-2).toDestination();
+export const limiter = new Tone.Limiter(-3).toDestination();
 
 export const reverb = new Tone.Reverb({ decay: 20, wet: 0 }).connect(limiter);
 
-export const delay = new Tone.FeedbackDelay({ delayTime: 0.3, feedback: 0.4, wet: 0 }).connect(reverb);
+export const delay = new Tone.FeedbackDelay({ delayTime: 0.3, feedback: 0.5, wet: 0 }).connect(reverb);
 
-export const compressor = new Tone.Compressor(-20, 2).connect(delay);
+export const compressor = new Tone.Compressor(-20, 3).connect(delay);
 
 export const toggleReverb = (enabled: boolean) => {
     if (enabled) {
