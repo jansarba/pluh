@@ -17,6 +17,7 @@ body {
   right: 16px;
   z-index: 100;
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -36,4 +37,16 @@ body {
 .ctrl-btn--on {
   border-color: rgba(94, 74, 227, 0.7);
   color: rgba(94, 74, 227, 0.9);
+}
+
+.ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ctrl-knobs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
