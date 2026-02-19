@@ -35,16 +35,37 @@
   animation: inkSpread 2.5s cubic-bezier(0.05, 0.7, 0.1, 1) forwards;
 }
 
-.dot {
+.dotContainer {
   position: absolute;
   width: 6px;
   height: 6px;
-  background-color: rgba(0, 0, 0, 1);
-  border-radius: 50%;
   z-index: 2;
   transform: translate(0, 0) scale(0);
   opacity: 0;
   animation: dotFloat 2.5s cubic-bezier(0.05, 0.7, 0.1, 1) forwards;
+}
+
+.dot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.dotFlash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 50%;
+  z-index: 1;
+  animation: flashFade 0.5s ease-out forwards;
+}
+
+.dot.dotFlashing {
+  background-color: rgba(255, 255, 255, 1);
 }
 
 
@@ -86,5 +107,16 @@
   100% {
     transform: translate(var(--dx), var(--dy)) scale(1);
     opacity: 0.9;
+  }
+}
+
+@keyframes flashFade {
+  0% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
   }
 }

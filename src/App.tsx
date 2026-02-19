@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BloomVisual } from "./components/BloomVisual";
 import type { Bloom, Dot } from "./types";
 import "./App.css";
+import { generateBloomNotes, startAudio } from "./audio";
 
 const BLOB_COLORS = [
   'rgba(5, 41, 158, 1)',   // international-klein-blue
@@ -14,8 +15,15 @@ const MAX_BLOOMS = 8;
 
 function App() {
   const [blooms, setBlooms] = useState<Bloom[]>([]);
+  const [audioStarted, setAudioStarted] = useState(false);
 
-  const handleScreenClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleScreenClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+
+    if (!audioStarted) {
+      await startAudio();
+      setAudioStarted(true);
+    }
+
     const elementsUnderCursor = document.elementsFromPoint(e.clientX, e.clientY);
     
     const clickedBloomElements = elementsUnderCursor.filter(
@@ -45,12 +53,15 @@ function App() {
       }
 
       const bloomId = Date.now();
+      const bloomNotes = generateBloomNotes(dotCount);
       const newDots: Dot[] = [];
       for (let i = 0; i < dotCount; i++) {
         newDots.push({
           id: `${bloomId}-${i}`,
           x: (Math.random() - 0.5) * 60,
           y: (Math.random() - 0.5) * 60,
+          note: bloomNotes[i],
+          isPlaying: false,
         });
       }
 
