@@ -9,18 +9,19 @@ interface DotVisualProps {
 
 export const DotVisual = ({ dot }: DotVisualProps) => {
   const flashRef = useRef<HTMLDivElement>(null);
+  const playedNote = dot.noteOverride ?? dot.note;
 
   useEffect(() => {
     if (dot.isPlaying && flashRef.current) {
-      synth.triggerAttackRelease(dot.note, "16n", undefined, 0.1);
-      notifyDotFired(dot.note);
+      synth.triggerAttackRelease(playedNote, "16n", undefined, 0.1);
+      notifyDotFired(playedNote);
 
       // trigger reflow to restart animation
       flashRef.current.style.animation = 'none';
       void flashRef.current.offsetHeight; // force
       flashRef.current.style.animation = '';
     }
-  }, [dot.isPlaying, dot.note]);
+  }, [dot.isPlaying, playedNote]);
 
   return (
     <div

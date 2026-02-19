@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import type { Bloom } from "../types";
+import type { Bloom, Dot } from "../types";
 import { DotVisual } from "./DotVisual";
 import styles from "./BloomVisual.module.css";
+import { lowestNote, shiftOctave } from "../audio";
 
 interface Props {
   data: Bloom;
@@ -18,6 +19,8 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
   const [rhythm, setRhythm] = useState<number[]>([]);
   const initialPlayCompleteRef = useRef(false);
   const rhythmIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const dotsRef = useRef(dots);
+  useEffect(() => { dotsRef.current = dots; }, [dots]);
 
   // after initial play completes, generate rhythm and start loop
   useEffect(() => {
@@ -71,23 +74,35 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
     let currentBeat = 0;
 
     const playBeat = () => {
+      const currentDots = dotsRef.current;
       if (rhythm.includes(currentBeat)) {
         // pick dots
-        const dotIndicesToPlay = [Math.floor(Math.random() * dots.length)];
+        const dotIndicesToPlay = [Math.floor(Math.random() * currentDots.length)];
         
         // Sometimes play multiple dots together
-        if (Math.random() < 0.3 && dots.length > 1) {
-          const secondDot = Math.floor(Math.random() * dots.length);
+        if (Math.random() < 0.3 && currentDots.length > 1) {
+          const secondDot = Math.floor(Math.random() * currentDots.length);
           if (secondDot !== dotIndicesToPlay[0]) {
             dotIndicesToPlay.push(secondDot);
           }
         }
 
+        const lowestDotNote = lowestNote(currentDots.map((d: Dot) => d.note));
+
         setDots(prevDots => 
-          prevDots.map((d, i) => ({
-            ...d,
-            isPlaying: dotIndicesToPlay.includes(i) ? !d.isPlaying : d.isPlaying
-          }))
+          prevDots.map((d, i) => {
+            if (!dotIndicesToPlay.includes(i)) return { ...d, isPlaying: d.isPlaying };
+            // non-lowest notes have 8per centt chance to play an octave up this is getting messy
+            const octaveUp = d.note !== lowestDotNote && Math.random() < 0.08;
+            if (octaveUp) {
+              console.log(`Octave up! ${d.note} -> ${shiftOctave(d.note, 1)}`);
+            }
+            return {
+              ...d,
+              isPlaying: !d.isPlaying,
+              noteOverride: octaveUp ? shiftOctave(d.note, 1) : undefined,
+            };
+          })
         );
       }
 
@@ -101,8 +116,8 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
         clearInterval(rhythmIntervalRef.current);
       }
     };
-  }, [rhythm, dots.length, data.isFadingOut]);
-  
+  }, [rhythm, data.isFadingOut]);
+
   const handleAnimationEnd = (e: React.AnimationEvent) => {
     if (data.isFadingOut && e.target === e.currentTarget) {
       onFadeComplete(data.id);
