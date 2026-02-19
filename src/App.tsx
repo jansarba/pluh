@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { BloomVisual } from "./components/BloomVisual";
 import { useBlooms } from "./hooks/useBlooms";
-import { startAudio } from "./audio";
+import { startAudio, toggleReverb } from "./audio";
 import "./App.css";
 
 function App() {
   const { blooms, createBloom, dismissBloom, removeBloom } = useBlooms();
   const [audioStarted, setAudioStarted] = useState(false);
+  const [reverbOn, setReverbOn] = useState(false);
 
   const handleScreenClick = async (e: React.MouseEvent<HTMLDivElement>) => {
 
@@ -28,8 +29,24 @@ function App() {
     }
   };
 
+  const handleReverbToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = !reverbOn;
+    setReverbOn(next);
+    toggleReverb(next);
+  };
+
   return (
     <div className="canvas-container" onClick={handleScreenClick}>
+      <div className="master-controls">
+        <button
+          className={`ctrl-btn ${reverbOn ? 'ctrl-btn--on' : ''}`}
+          onClick={handleReverbToggle}
+        >
+          reverb
+        </button>
+      </div>
+
       {blooms.map((bloom) => (
         <BloomVisual
           key={bloom.id}

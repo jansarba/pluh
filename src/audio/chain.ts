@@ -1,11 +1,15 @@
 import * as Tone from "tone";
 
 export const limiter = new Tone.Limiter(-2).toDestination();
-export const compressor = new Tone.Compressor(-20, 2).connect(limiter);
 
-// To add master effects later:
-// 1. Create the effect node here
-// 2. Insert it between masterCompressor and masterLimiter
-// e.g.:
-//   export const masterReverb = new Tone.Reverb(2).connect(masterLimiter);
-//   masterCompressor.connect(masterReverb);
+export const reverb = new Tone.Reverb({ decay: 20, wet: 0 }).connect(limiter);
+
+export const compressor = new Tone.Compressor(-20, 2).connect(reverb);
+
+export const toggleReverb = (enabled: boolean) => {
+    if (enabled) {
+        reverb.wet.rampTo(1, 0.5);
+    } else {
+        reverb.wet.setValueAtTime(0, Tone.now());
+    }
+};
