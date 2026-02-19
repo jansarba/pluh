@@ -66,3 +66,14 @@ export const generateBloomNotes = (count: number): string[] => {
   
   return notes;
 };
+
+export const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+export const noteToSemitone = (note: string): number => {
+  const octave = parseInt(note.slice(-1));
+  const name = note.slice(0, -1);
+  return octave * 12 + NOTE_NAMES.indexOf(name);
+};
+
+export const lowestNote = (notes: string[]): string =>
+  notes.reduce((a, b) => noteToSemitone(a) <= noteToSemitone(b) ? a : b);

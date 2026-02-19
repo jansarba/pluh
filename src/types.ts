@@ -3,6 +3,7 @@ export interface Dot {
     x: number;
     y: number;
     note: string;
+    noteOverride?: string;
     isPlaying?: boolean;
 }
 

@@ -3,7 +3,7 @@ import { compressor } from "./chain";
 import { setBassDetune, setBassWaveform } from "./bass";
 
 export { limiter, compressor, reverb, toggleReverb, delay, toggleDelay, setDelayFeedback, setDelayTime as applyDelayTime } from "./chain";
-export { generateBloomNotes, getRandomPentatonicNote, C_PENTATONIC } from "./notes";
+export { generateBloomNotes, getRandomPentatonicNote, C_PENTATONIC, shiftOctave, noteToSemitone, lowestNote } from "./notes";
 export { enableBass, notifyDotFired } from "./bass";
 export { startRecording, stopRecording, isRecordingSupported } from "./gptRecorder";
 

@@ -1,20 +1,10 @@
 import * as Tone from "tone";
 import { limiter } from "./chain";
-import { shiftOctave, getRandomPentatonicNote } from "./notes";
+import { shiftOctave, getRandomPentatonicNote, lowestNote } from "./notes";
 
-const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const DOT_THRESHOLD = 16;
 const BASS_DURATION = 18;
 const MIN_OCTAVE = 2;
-
-const noteToSemitone = (note: string): number => {
-  const octave = parseInt(note.slice(-1));
-  const name = note.slice(0, -1);
-  return octave * 12 + NOTE_NAMES.indexOf(name);
-};
-
-const lowestNote = (notes: string[]): string =>
-  notes.reduce((a, b) => noteToSemitone(a) <= noteToSemitone(b) ? a : b);
 
 const clampOctave = (note: string, min: number): string => {
   const name = note.slice(0, -1);
