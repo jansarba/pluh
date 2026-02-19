@@ -103,8 +103,8 @@ export const BloomVisual = ({ data, onFadeComplete }: Props) => {
     };
   }, [rhythm, dots.length, data.isFadingOut]);
   
-  const handleAnimationEnd = () => {
-    if (data.isFadingOut) {
+  const handleAnimationEnd = (e: React.AnimationEvent) => {
+    if (data.isFadingOut && e.target === e.currentTarget) {
       onFadeComplete(data.id);
     }
   };

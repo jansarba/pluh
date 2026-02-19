@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BloomVisual } from "./components/BloomVisual";
 import { Knob } from "./components/Knob";
 import { useBlooms } from "./hooks/useBlooms";
-import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, applyDelayTime, setPitch, setWaveform, enableBass } from "./audio";
+import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, applyDelayTime, setPitch, setWaveform, enableBass, startRecording, stopRecording, isRecordingSupported } from "./audio";
 import "./App.css";
 
 type Waveform = "triangle" | "sine" | "square";
@@ -13,6 +13,7 @@ function App() {
   const [reverbOn, setReverbOn] = useState(false);
   const [delayOn, setDelayOn] = useState(false);
   const [bassOn, setBassOn] = useState(false);
+  const [recordState, setRecordState] = useState<'idle' | 'choosing' | 'recording'>('idle');
   const [feedback, setFeedback] = useState(0.4);
   const [delayTime, setDelayTime] = useState(300);
   const [pitch, setPitchState] = useState(0);
@@ -58,6 +59,23 @@ function App() {
     enableBass(next);
   };
 
+  const handleRecordToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isRecordingSupported()) return;
+    if (recordState === 'recording') {
+      stopRecording();
+      setRecordState('idle');
+    } else {
+      setRecordState('choosing');
+    }
+  };
+
+  const handleRecordChoice = (e: React.MouseEvent, wet: boolean) => {
+    e.stopPropagation();
+    startRecording(wet);
+    setRecordState('recording');
+  };
+
   const handleFeedbackChange = (val: number) => {
     setFeedback(val);
     setDelayFeedback(val);
@@ -84,6 +102,27 @@ function App() {
 
   return (
     <div className="canvas-container" onClick={handleScreenClick}>
+
+      <div className="rec-controls">
+        {isRecordingSupported() ? (
+          recordState === 'choosing' ? (
+            <>
+              <button className="ctrl-btn" onClick={e => handleRecordChoice(e, false)}>dry</button>
+              <button className="ctrl-btn" onClick={e => handleRecordChoice(e, true)}>wet</button>
+            </>
+          ) : (
+            <button
+              className={`ctrl-btn ctrl-btn--norec ${recordState === 'recording' ? 'ctrl-btn--recording' : ''}`}
+              onClick={handleRecordToggle}
+            >
+              {recordState === 'recording' ? 'stop' : 'rec'}
+            </button>
+          )
+        ) : (
+          <span className="ctrl-label ctrl-unsupported" title="Recording not supported on this browser">rec ✕</span>
+        )}
+      </div>
+
       <div className="master-controls">
 
         <select
