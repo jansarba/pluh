@@ -29,6 +29,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 38px;
 }
 
 .ctrl-btn,
@@ -138,8 +139,10 @@ body {
   }
 
   .rec-controls {
-    top: 12px;
-    left: 12px;
+    top: auto;
+    bottom: 12px;
+    left: auto;
+    right: 12px;
   }
 
   .ctrl-btn,
