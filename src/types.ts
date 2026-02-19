@@ -2,6 +2,8 @@ export interface Dot {
     id: string;
     x: number;
     y: number;
+    note: string;
+    isPlaying?: boolean;
 }
 
 export interface Bloom {
@@ -13,4 +15,5 @@ export interface Bloom {
     color: string;
     isFadingOut?: boolean;
     dots: Dot[];
+    rhythm?: number[]; // beat ppositions
 }
