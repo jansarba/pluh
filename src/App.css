@@ -1,0 +1,12 @@
+.canvas-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 240, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
