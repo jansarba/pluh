@@ -2,8 +2,10 @@ import { useState } from "react";
 import { BloomVisual } from "./components/BloomVisual";
 import { Knob } from "./components/Knob";
 import { useBlooms } from "./hooks/useBlooms";
-import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, setDelayTime as applyDelayTime } from "./audio";
+import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, applyDelayTime, setPitch, setWaveform } from "./audio";
 import "./App.css";
+
+type Waveform = "triangle" | "sine" | "square";
 
 function App() {
   const { blooms, createBloom, dismissBloom, removeBloom } = useBlooms();
@@ -12,6 +14,8 @@ function App() {
   const [delayOn, setDelayOn] = useState(false);
   const [feedback, setFeedback] = useState(0.4);
   const [delayTime, setDelayTime] = useState(300);
+  const [pitch, setPitchState] = useState(0);
+  const [waveform, setWaveformState] = useState<Waveform>("triangle");
 
   const handleScreenClick = async (e: React.MouseEvent<HTMLDivElement>) => {
 
@@ -57,9 +61,51 @@ function App() {
     applyDelayTime(val);
   };
 
+  const handlePitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Number(e.target.value);
+    setPitchState(val);
+    setPitch(val);
+  };
+
+  const handleWaveformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value as Waveform;
+    setWaveformState(val);
+    setWaveform(val);
+  };
+
+  const stopProp = (e: React.SyntheticEvent) => e.stopPropagation();
+
   return (
     <div className="canvas-container" onClick={handleScreenClick}>
-      <div className="master-controls" onClick={e => e.stopPropagation()}>
+      <div className="master-controls">
+
+        <select
+          className="ctrl-select"
+          value={waveform}
+          onChange={handleWaveformChange}
+          onClick={stopProp}
+          onTouchStart={stopProp}
+        >
+          <option value="triangle">triangle</option>
+          <option value="sine">sine</option>
+          <option value="square">square</option>
+        </select>
+
+        <div className="ctrl-group">
+          <span className="ctrl-label">pitch</span>
+          <input
+            type="range"
+            className="ctrl-slider"
+            min={-12}
+            max={12}
+            step={1}
+            value={pitch}
+            onChange={handlePitchChange}
+            onClick={stopProp}
+            onTouchStart={stopProp}
+          />
+        </div>
+
         <div className="ctrl-group">
           <button
             className={`ctrl-btn ${delayOn ? 'ctrl-btn--on' : ''}`}
@@ -79,6 +125,7 @@ function App() {
         >
           reverb
         </button>
+
       </div>
 
       {blooms.map((bloom) => (
