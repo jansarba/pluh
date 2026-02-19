@@ -4,7 +4,7 @@ export const getRandomPentatonicNote = () => {
   return C_PENTATONIC[Math.floor(Math.random() * C_PENTATONIC.length)];
 };
 
-const shiftOctave = (note: string, shift: number): string => {
+export const shiftOctave = (note: string, shift: number): string => {
   const noteName = note.slice(0, -1);
   const octave = parseInt(note.slice(-1));
   return `${noteName}${octave + shift}`;

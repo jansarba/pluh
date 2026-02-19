@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Dot } from "../types";
-import { synth } from "../audio";
+import { synth, notifyDotFired } from "../audio";
 import styles from "./BloomVisual.module.css";
 
 interface DotVisualProps {
@@ -13,7 +13,8 @@ export const DotVisual = ({ dot }: DotVisualProps) => {
   useEffect(() => {
     if (dot.isPlaying && flashRef.current) {
       synth.triggerAttackRelease(dot.note, "16n", undefined, 0.1);
-      
+      notifyDotFired(dot.note);
+
       // trigger reflow to restart animation
       flashRef.current.style.animation = 'none';
       void flashRef.current.offsetHeight; // force

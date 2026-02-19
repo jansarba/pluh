@@ -13,6 +13,7 @@
   background: transparent;
   cursor: ns-resize;
   position: relative;
+  touch-action: none;
 }
 
 .knob::after {
