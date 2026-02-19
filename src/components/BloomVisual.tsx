@@ -1,46 +1,12 @@
 import { useEffect, useState, useRef } from "react";
-import type { Bloom, Dot } from "../types";
+import type { Bloom } from "../types";
+import { DotVisual } from "./DotVisual";
 import styles from "./BloomVisual.module.css";
-import { synth } from "../audio";
 
 interface Props {
   data: Bloom;
   onFadeComplete: (id: number) => void;
 }
-
-interface DotVisualProps {
-  dot: Dot;
-}
-
-const DotVisual = ({ dot }: DotVisualProps) => {
-  const flashRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (dot.isPlaying && flashRef.current) {
-      synth.triggerAttackRelease(dot.note, "16n", undefined, 0.1);
-      
-      // trigger reflow to start animation ?????
-      flashRef.current.style.animation = 'none';
-      void flashRef.current.offsetHeight; // force
-      flashRef.current.style.animation = '';
-    }
-  }, [dot.isPlaying, dot.note]);
-
-  return (
-    <div
-      className={styles.dotContainer}
-      style={{ 
-        "--dx": `${dot.x}px`, 
-        "--dy": `${dot.y}px`
-      } as React.CSSProperties}
-    >
-      {dot.isPlaying && (
-        <div ref={flashRef} className={styles.dotFlash} />
-      )}
-      <div className={styles.dot} />
-    </div>
-  );
-};
 
 const createGradientFromColor = (rgbaColor: string) => {
   const endColor = rgbaColor.replace(', 1)', ', 0.9)'); 
