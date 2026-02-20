@@ -13,8 +13,9 @@ const clampOctave = (note: string, min: number): string => {
 };
 
 export const bassSynth = new Tone.Synth({
-  oscillator: { type: "triangle" },
+  oscillator: { type: "sine" },
   envelope: { attack: 0.05, decay: 18.0, sustain: 0, release: 0.1 },
+  detune: 400,
 }).connect(limiter);
 
 let enabled = false;

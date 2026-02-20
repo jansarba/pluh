@@ -7,7 +7,10 @@ export { generateBloomNotes, getRandomPentatonicNote, C_PENTATONIC, shiftOctave,
 export { enableBass, notifyDotFired } from "./bass";
 export { startRecording, stopRecording, isRecordingSupported } from "./gptRecorder";
 
-export const synth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: "triangle" } }).connect(compressor);
+export const synth = new Tone.PolySynth(Tone.Synth, {
+  oscillator: { type: "sine" },
+  detune: 400,
+}).connect(compressor);
 
 export const setPitch = (semitones: number) => {
   synth.set({ detune: semitones * 100 });

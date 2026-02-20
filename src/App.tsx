@@ -11,13 +11,13 @@ function App() {
   const { blooms, createBloom, dismissBloom, removeBloom } = useBlooms();
   const [audioStarted, setAudioStarted] = useState(false);
   const [reverbOn, setReverbOn] = useState(false);
-  const [delayOn, setDelayOn] = useState(false);
+  const [delayOn, setDelayOn] = useState(true);
   const [bassOn, setBassOn] = useState(false);
   const [recordState, setRecordState] = useState<'idle' | 'choosing' | 'recording'>('idle');
   const [feedback, setFeedback] = useState(0.4);
   const [delayTime, setDelayTime] = useState(300);
-  const [pitch, setPitchState] = useState(0);
-  const [waveform, setWaveformState] = useState<Waveform>("triangle");
+  const [pitch, setPitchState] = useState(4);
+  const [waveform, setWaveformState] = useState<Waveform>("sine");
 
   const handleScreenClick = async (e: React.MouseEvent<HTMLDivElement>) => {
     if (!audioStarted) {
