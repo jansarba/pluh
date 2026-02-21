@@ -1,0 +1,50 @@
+.container {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.box {
+  background: rgba(255, 255, 240, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.canvas {
+  display: block;
+  width: 220px;
+  height: 80px;
+  border-radius: 4px;
+}
+
+.label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  user-select: none;
+  margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    bottom: 56px;
+    left: 8px;
+    gap: 6px;
+    flex-direction: column;
+  }
+
+  .canvas {
+    width: 160px;
+    height: 60px;
+  }
+}

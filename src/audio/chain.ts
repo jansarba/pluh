@@ -6,7 +6,9 @@ export const reverb = new Tone.Reverb({ decay: 20, wet: 0 }).connect(limiter);
 
 export const delay = new Tone.FeedbackDelay({ delayTime: 0.3, feedback: 0.5, wet: 1 }).connect(reverb);
 
-export const compressor = new Tone.Compressor(-20, 3).connect(delay);
+export const compressor2 = new Tone.Compressor(-20, 3).connect(delay);
+
+export const compressor1 = new Tone.Compressor(-30, 2).connect(compressor2);
 
 export const toggleReverb = (enabled: boolean) => {
     if (enabled) {

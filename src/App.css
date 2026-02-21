@@ -14,22 +14,21 @@ body {
 .master-controls {
   position: fixed;
   top: 16px;
+  left: 16px;
   right: 16px;
   z-index: 100;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 16px;
+  margin: -16px;
 }
 
-.rec-controls {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 100;
+.rec-group {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 38px;
+  margin-right: auto;
 }
 
 .ctrl-btn,
@@ -131,18 +130,11 @@ body {
 @media (max-width: 600px) {
   .master-controls {
     top: 12px;
+    left: 12px;
     right: 12px;
     gap: 10px;
     flex-wrap: wrap;
     justify-content: flex-end;
-    max-width: calc(100vw - 24px);
-  }
-
-  .rec-controls {
-    top: auto;
-    bottom: 12px;
-    left: auto;
-    right: 12px;
   }
 
   .ctrl-btn,

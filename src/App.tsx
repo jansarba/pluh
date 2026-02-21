@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BloomVisual } from "./components/BloomVisual";
 import { Knob } from "./components/Knob";
+import { Visualizer } from "./components/Visualizer";
 import { useBlooms } from "./hooks/useBlooms";
 import { startAudio, toggleReverb, toggleDelay, setDelayFeedback, applyDelayTime, setPitch, setWaveform, enableBass, startRecording, stopRecording, isRecordingSupported } from "./audio";
 import "./App.css";
@@ -103,27 +104,27 @@ function App() {
   return (
     <div className="canvas-container" onClick={handleScreenClick}>
 
-      <div className="rec-controls">
-        {isRecordingSupported() ? (
-          recordState === 'choosing' ? (
-            <>
-              <button className="ctrl-btn" onClick={e => handleRecordChoice(e, false)}>dry</button>
-              <button className="ctrl-btn" onClick={e => handleRecordChoice(e, true)}>wet</button>
-            </>
-          ) : (
-            <button
-              className={`ctrl-btn ctrl-btn--norec ${recordState === 'recording' ? 'ctrl-btn--recording' : ''}`}
-              onClick={handleRecordToggle}
-            >
-              {recordState === 'recording' ? 'stop' : 'rec'}
-            </button>
-          )
-        ) : (
-          <span className="ctrl-label ctrl-unsupported" title="Recording not supported on this browser">rec ✕</span>
-        )}
-      </div>
+      <div className="master-controls" onClick={stopProp}>
 
-      <div className="master-controls">
+        <div className="rec-group">
+          {isRecordingSupported() ? (
+            recordState === 'choosing' ? (
+              <>
+                <button className="ctrl-btn" onClick={e => handleRecordChoice(e, false)}>dry</button>
+                <button className="ctrl-btn" onClick={e => handleRecordChoice(e, true)}>wet</button>
+              </>
+            ) : (
+              <button
+                className={`ctrl-btn ${recordState === 'recording' ? 'ctrl-btn--recording' : ''}`}
+                onClick={handleRecordToggle}
+              >
+                {recordState === 'recording' ? 'stop' : 'rec'}
+              </button>
+            )
+          ) : (
+            <span className="ctrl-label ctrl-unsupported" title="Recording not supported on this browser">rec ✕</span>
+          )}
+        </div>
 
         <select
           className="ctrl-select"
@@ -188,6 +189,11 @@ function App() {
           onFadeComplete={removeBloom}
         />
       ))}
+
+      <Visualizer
+        audioStarted={audioStarted}
+        recordState={recordState}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import { limiter, compressor } from "./chain";
+import { limiter, compressor1 } from "./chain";
 
 let mediaRecorder: MediaRecorder | null = null;
 let chunks: BlobPart[] = [];
@@ -13,7 +13,7 @@ export const startRecording = (wet: boolean) => {
   const ctx = Tone.getContext().rawContext as AudioContext;
   destNode = ctx.createMediaStreamDestination();
 
-  const sourceNode = wet ? limiter : compressor;
+  const sourceNode = wet ? limiter : compressor1;
   sourceNode.connect(destNode as unknown as Tone.ToneAudioNode);
 
   chunks = [];
@@ -30,7 +30,7 @@ export const startRecording = (wet: boolean) => {
     a.click();
     URL.revokeObjectURL(url);
     if (destNode) {
-      const sourceNode = currentWet ? limiter : compressor;
+      const sourceNode = currentWet ? limiter : compressor1;
       sourceNode.disconnect(destNode as unknown as Tone.ToneAudioNode);
       destNode = null;
     }
