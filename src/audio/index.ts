@@ -1,8 +1,8 @@
 import * as Tone from "tone";
-import { compressor } from "./chain";
+import { compressor1 } from "./chain";
 import { setBassDetune, setBassWaveform } from "./bass";
 
-export { limiter, compressor, reverb, toggleReverb, delay, toggleDelay, setDelayFeedback, setDelayTime as applyDelayTime } from "./chain";
+export { limiter, compressor1, reverb, toggleReverb, delay, toggleDelay, setDelayFeedback, setDelayTime as applyDelayTime } from "./chain";
 export { generateBloomNotes, getRandomPentatonicNote, C_PENTATONIC, shiftOctave, noteToSemitone, lowestNote } from "./notes";
 export { enableBass, notifyDotFired } from "./bass";
 export { startRecording, stopRecording, isRecordingSupported } from "./gptRecorder";
@@ -10,7 +10,7 @@ export { startRecording, stopRecording, isRecordingSupported } from "./gptRecord
 export const synth = new Tone.PolySynth(Tone.Synth, {
   oscillator: { type: "sine" },
   detune: 400,
-}).connect(compressor);
+}).connect(compressor1);
 
 export const setPitch = (semitones: number) => {
   synth.set({ detune: semitones * 100 });
